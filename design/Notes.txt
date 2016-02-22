@@ -1,0 +1,3 @@
+
+-Input words on website with javascript autofill. both English and
+  -Ajax validation for preexisting words
