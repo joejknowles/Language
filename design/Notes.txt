@@ -1,3 +1,14 @@
+When the verbs page is visited
+I want to display verb tables
+So I can see the full vocabulary
 
--Input words on website with javascript autofill. both English and
-  -Ajax validation for preexisting words
+When a user inputs a verb
+I want conjugations to be autofilled
+So they can add words quickly
+
+
+
+- Input words on website with javascript autofill. both English and
+  - Ajax validation for preexisting words
+
+- Abstract factories for checking equality

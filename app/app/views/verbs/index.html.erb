@@ -1,0 +1,8 @@
+<% if @verbs.empty? %>
+  No verbs yet!
+<% else %>
+  <% @verbs.each do |verb| %>
+    Write in English: <%= verb.cz_infinitive %>
+  <% end %>
+<% end %>
+<a href='#'>Add a verb</a>
