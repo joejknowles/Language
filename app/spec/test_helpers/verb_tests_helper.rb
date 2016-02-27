@@ -1,12 +1,30 @@
 module VerbTestsHelper
   def self.create_verb_to_be
-    Verb.create_en_cz(
-      cz_infinitive: "být", en_infinitive: "to be",
-      cz_first_s: "jsem", en_first_s: "am",
-      cz_second_s: "jsi", en_second_s: "are",
-      cz_third_s: "je", en_third_s: "is",
-      cz_first_p: "jsme", en_first_p: "are",
-      cz_second_p: "jste", en_second_p: "are",
-      cz_third_p: "jsou", en_third_p: "are")
+    VerbsHelper.create_en_cz(
+      cz:
+      {
+        infinitive: "být",
+        first_s: "jsem",
+        second_s: "jsi",
+        third_s: "je",
+        first_p: "jsme",
+        second_p: "jste",
+        third_p: "jsou"
+      },
+      en:
+      {
+        infinitive: "to be",
+        first_s: "am",
+        second_s: "are",
+        third_s: "is",
+        first_p: "are",
+        second_p: "are",
+        third_p: "are"
+      }
+    )
+  end
+  def self.create_verbal_aspects
+    VerbalAspect.first_or_create(name: "perfective")
+    VerbalAspect.first_or_create(name: "imperfective")
   end
 end

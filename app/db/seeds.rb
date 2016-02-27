@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+if ENV['RAILS_ENV'] == 'test'
+  VerbalAspect.first_or_create(id: 1, name: "perfective")
+  VerbalAspect.first_or_create(id: 2, name: "imperfective")
+end

@@ -12,6 +12,7 @@ feature 'verbs, ' do
 
   context 'when verbs have been added' do
     before do
+      VerbTestsHelper.create_verbal_aspects
       VerbTestsHelper.create_verb_to_be
     end
     scenario 'should ask for a translation verbs' do
