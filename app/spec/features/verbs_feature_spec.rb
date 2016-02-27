@@ -16,7 +16,16 @@ feature 'verbs, ' do
     end
     scenario 'should ask for a translation verbs' do
       visit '/verbs'
-      expect(page).to have_content 'Write in English: byt'
+      expect(page).to have_content(
+        """
+        být to be
+        jsem am
+        jsi are
+        je is
+        jsme are
+        jste are
+        jsou are
+        """)
     end
   end
 end
