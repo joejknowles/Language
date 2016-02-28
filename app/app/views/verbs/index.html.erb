@@ -2,7 +2,12 @@
   No verbs yet!
 <% else %>
   <% @verbs.each do |verb| %>
-    Write in English: <%= verb.cz_infinitive %>
+    <% verb.conjugated_verb_pairs.each do |pair| %>
+      <% pair.conjugated_verbs.each do |conjugated_verb| %>
+        <%= conjugated_verb.conjugation + " "%>
+      <% end %>
+    <% end %>
+    <br>
   <% end %>
 <% end %>
 <a href='#'>Add a verb</a>

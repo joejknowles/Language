@@ -6,7 +6,9 @@ When a user inputs a verb
 I want conjugations to be autofilled
 So they can add words quickly
 
-
+When a displayed word is ambiguous
+I want to show notes on hover
+So it can be disambiguated
 
 - Input words on website with javascript autofill. both English and
   - Ajax validation for preexisting words

@@ -10,7 +10,7 @@ class VerbCreator
   def initialize_variables(options)
     @conjugations = options[:conjugations]
     @source_language = options.fetch(:source_language, 'en')
-    @source_language = options.fetch(:target_language, 'cz')
+    @target_language = options.fetch(:target_language, 'cz')
     @verbal_aspect = options.fetch(:verbal_aspect, 'perfective')
   end
 
@@ -24,53 +24,79 @@ class VerbCreator
   end
 
   def create_all_verb_pairs
-    form.each_key do |form_name|
+    form_person_map.each_key do |form_name|
       create_verb_pair(form_name)
     end
   end
 
   def create_verb_pair(form_name)
-    ConjugatedVerbPair.Create(
-      { verb: @parent_verb }.merge(
-        create_conjugated_verbs(form_name))
-    )
+    verb_pair = ConjugatedVerbPair.create(verb: @parent_verb)
+    ConjugatedVerbPairing.create(conjugated_verb: conjugation_for_target_language(form_name), conjugated_verb_pair: verb_pair)
+    ConjugatedVerbPairing.create(conjugated_verb: conjugation_for_source_language(form_name), conjugated_verb_pair: verb_pair)
   end
 
   def find_verbal_aspect
     VerbalAspect.where(name: @verbal_aspect).first
   end
 
-  def create_conjugated_verbs(form_name)
-    source_verb = create_conjugated_verb(form_name, source_language)
-    target_verb = create_conjugated_verb(form_name, target_language)
-    create_conjugated_pair_hash(source_verb, target_verb)
+  def conjugation_for_source_language(form_name)
+    create_conjugated_verb(form_name, @source_language)
+  end
+
+  def conjugation_for_target_language(form_name)
+    create_conjugated_verb(form_name, @target_language)
   end
 
   def create_conjugated_verb(form_name, language)
-    ConjugatedVerb.Create(form_id: form[form_id], language_id: language,
-                          conjugation: get_conjugation(language, form_name))
+    ConjugatedVerb.create(form_person_map[form_name].merge(
+                            language: language_record(language),
+                            conjugation: get_conjugation(language, form_name)))
   end
 
-  def create_conjugated_pair_hash(source_verb, target_verb)
-    {
-      source_language_conjugated_verb: source_verb,
-      target_language_conjugated_verb: target_verb
-    }
+  def language_record(language)
+    Language.where(abbreviation: language).first
+  end
+
+  def create_conjugated_pair(form_name)
+    [
+      conjugation_for_source_language(form_name),
+      conjugation_for_target_language(form_name)
+    ]
   end
 
   def get_conjugation(language, form_name)
-    conjugations[language.to_sym][form_name.to_sym]
+    @conjugations[language.to_sym][form_name]
   end
 
-  def form
+  def form_person_map
     {
-      infinitive: 7,
-      first_s: 1,
-      second_s: 2,
-      third_s: 3,
-      first_p: 4,
-      second_p: 5,
-      third_p: 6
+      infinitive: {
+        form: Form.where(name: 'infinitive').first
+      },
+      first_s: {
+        form: Form.where(name: 'present').first,
+        # person: Person.where(name: 'first singular').first
+      },
+      second_s: {
+        form: Form.where(name: 'present').first,
+        person: Person.where(name: 'second singular').first
+      },
+      third_s: {
+        form: Form.where(name: 'present').first,
+        person: Person.where(name: 'third singular').first
+      },
+      first_p: {
+        form: Form.where(name: 'present').first,
+        person: Person.where(name: 'first plural').first
+      },
+      second_p: {
+        form: Form.where(name: 'present').first,
+        person: Person.where(name: 'second plural').first
+      },
+      third_p: {
+        form: Form.where(name: 'present').first,
+        person: Person.where(name: 'third plural').first
+      }
     }
   end
 end

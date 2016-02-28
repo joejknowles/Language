@@ -23,8 +23,43 @@ module VerbTestsHelper
       }
     )
   end
-  def self.create_verbal_aspects
+
+  def self.seed_verb_dependencies
+    seed_verbal_aspects
+    seed_languages
+    seed_forms
+    seed_all_persons
+  end
+
+  private
+
+  def self.seed_verbal_aspects
     VerbalAspect.first_or_create(name: "perfective")
     VerbalAspect.first_or_create(name: "imperfective")
+  end
+
+  def self.seed_languages
+    Language.first_or_create(name: 'English', abbreviation: 'en')
+    Language.first_or_create(name: 'Czech', abbreviation: 'cz')
+  end
+
+  def self.seed_forms
+    Form.first_or_create(name: 'infinitive')
+    Form.first_or_create(name: 'present')
+  end
+
+  def self.seed_all_persons
+    seed_persons('first singular',
+                 'second singular',
+                 'third singular',
+                 'first plural',
+                 'second plural',
+                 'third plural'
+                )
+  end
+  def self.seed_persons(*persons)
+    persons.each do |person|
+      Person.first_or_create(name: person)
+    end
   end
 end
