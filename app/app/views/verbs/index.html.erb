@@ -2,12 +2,17 @@
   No verbs yet!
 <% else %>
   <% @verbs.each do |verb| %>
-    <% verb.conjugated_verb_pairs.each do |pair| %>
-      <% pair.conjugated_verbs.each do |conjugated_verb| %>
-        <%= conjugated_verb.conjugation + " "%>
+    <table>
+      <% verb.conjugated_verb_pairs.each do |pair| %>
+        <tr>
+          <% pair.conjugated_verbs.reverse.each do |conjugated_verb| %>
+            <td>
+              <%= conjugated_verb.conjugation %>
+            </td>
+          <% end %>
+        </tr>
       <% end %>
-    <% end %>
-    <br>
+    </table>
   <% end %>
 <% end %>
 <a href='#'>Add a verb</a>

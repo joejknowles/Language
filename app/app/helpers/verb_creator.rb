@@ -75,7 +75,7 @@ class VerbCreator
       },
       first_s: {
         form: Form.where(name: 'present').first,
-        # person: Person.where(name: 'first singular').first
+        person: Person.where(name: 'first singular').first
       },
       second_s: {
         form: Form.where(name: 'present').first,

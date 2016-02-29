@@ -34,18 +34,18 @@ module VerbTestsHelper
   private
 
   def self.seed_verbal_aspects
-    VerbalAspect.first_or_create(name: "perfective")
-    VerbalAspect.first_or_create(name: "imperfective")
+    VerbalAspect.find_or_create_by(name: "perfective")
+    VerbalAspect.find_or_create_by(name: "imperfective")
   end
 
   def self.seed_languages
-    Language.first_or_create(name: 'English', abbreviation: 'en')
-    Language.first_or_create(name: 'Czech', abbreviation: 'cz')
+    Language.find_or_create_by(name: 'English', abbreviation: 'en')
+    Language.find_or_create_by(name: 'Czech', abbreviation: 'cz')
   end
 
   def self.seed_forms
-    Form.first_or_create(name: 'infinitive')
-    Form.first_or_create(name: 'present')
+    Form.find_or_create_by(name: 'infinitive')
+    Form.find_or_create_by(name: 'present')
   end
 
   def self.seed_all_persons
@@ -59,7 +59,7 @@ module VerbTestsHelper
   end
   def self.seed_persons(*persons)
     persons.each do |person|
-      Person.first_or_create(name: person)
+      Person.find_or_create_by(name: person)
     end
   end
 end
