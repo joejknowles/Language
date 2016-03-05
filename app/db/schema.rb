@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160227230509) do
+ActiveRecord::Schema.define(version: 20160228170540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,17 +35,13 @@ ActiveRecord::Schema.define(version: 20160227230509) do
   add_index "conjugated_verb_pairs", ["verb_id"], name: "index_conjugated_verb_pairs_on_verb_id", using: :btree
 
   create_table "conjugated_verbs", force: :cascade do |t|
-    t.integer  "form_id"
     t.integer  "language_id"
     t.string   "conjugation"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.integer  "person_id"
   end
 
-  add_index "conjugated_verbs", ["form_id"], name: "index_conjugated_verbs_on_form_id", using: :btree
   add_index "conjugated_verbs", ["language_id"], name: "index_conjugated_verbs_on_language_id", using: :btree
-  add_index "conjugated_verbs", ["person_id"], name: "index_conjugated_verbs_on_person_id", using: :btree
 
   create_table "forms", force: :cascade do |t|
     t.string   "name"
@@ -83,8 +79,6 @@ ActiveRecord::Schema.define(version: 20160227230509) do
   add_foreign_key "conjugated_verb_pairings", "conjugated_verb_pairs"
   add_foreign_key "conjugated_verb_pairings", "conjugated_verbs"
   add_foreign_key "conjugated_verb_pairs", "verbs"
-  add_foreign_key "conjugated_verbs", "forms"
   add_foreign_key "conjugated_verbs", "languages"
-  add_foreign_key "conjugated_verbs", "people"
   add_foreign_key "verbs", "verbal_aspects"
 end

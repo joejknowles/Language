@@ -15,7 +15,7 @@ feature 'verbs, ' do
       VerbTestsHelper.seed_verb_dependencies
       VerbTestsHelper.create_verb_to_be
     end
-    scenario 'should ask for a translation verbs' do
+    scenario 'should show table of verbs' do
       visit '/verbs'
       expect(page).to have_content(
         """

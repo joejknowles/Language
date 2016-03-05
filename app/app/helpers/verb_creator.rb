@@ -69,32 +69,41 @@ class VerbCreator
   end
 
   def form_person_map
+    infinitive = Form.find_by(name: 'infinitive')
+    50.times do
+      puts infinitive.name
+    end
+    present = Form.find_by(name: 'present')
+    50.times do
+      puts present.id
+    end
+
     {
       infinitive: {
-        form: Form.where(name: 'infinitive').first
+        form: infinitive
       },
       first_s: {
-        form: Form.where(name: 'present').first,
+        form: present,
         person: Person.where(name: 'first singular').first
       },
       second_s: {
-        form: Form.where(name: 'present').first,
+        form: present,
         person: Person.where(name: 'second singular').first
       },
       third_s: {
-        form: Form.where(name: 'present').first,
+        form: present,
         person: Person.where(name: 'third singular').first
       },
       first_p: {
-        form: Form.where(name: 'present').first,
+        form: present,
         person: Person.where(name: 'first plural').first
       },
       second_p: {
-        form: Form.where(name: 'present').first,
+        form: present,
         person: Person.where(name: 'second plural').first
       },
       third_p: {
-        form: Form.where(name: 'present').first,
+        form: present,
         person: Person.where(name: 'third plural').first
       }
     }
