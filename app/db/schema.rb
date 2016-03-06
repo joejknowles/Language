@@ -11,74 +11,89 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160228170540) do
+ActiveRecord::Schema.define(version: 20160305165944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "conjugated_verb_pairings", force: :cascade do |t|
-    t.integer  "conjugated_verb_id"
-    t.integer  "conjugated_verb_pair_id"
+  create_table "grammatical_categories", force: :cascade do |t|
+    t.string   "grammatical_category_name"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "grammemes", force: :cascade do |t|
+    t.integer  "grammatical_category_id"
+    t.string   "grammeme_name"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
 
-  add_index "conjugated_verb_pairings", ["conjugated_verb_id"], name: "index_conjugated_verb_pairings_on_conjugated_verb_id", using: :btree
-  add_index "conjugated_verb_pairings", ["conjugated_verb_pair_id"], name: "index_conjugated_verb_pairings_on_conjugated_verb_pair_id", using: :btree
+  add_index "grammemes", ["grammatical_category_id"], name: "index_grammemes_on_grammatical_category_id", using: :btree
 
-  create_table "conjugated_verb_pairs", force: :cascade do |t|
-    t.integer  "verb_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "conjugated_verb_pairs", ["verb_id"], name: "index_conjugated_verb_pairs_on_verb_id", using: :btree
-
-  create_table "conjugated_verbs", force: :cascade do |t|
+  create_table "inflected_words", force: :cascade do |t|
     t.integer  "language_id"
-    t.string   "conjugation"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "word"
   end
 
-  add_index "conjugated_verbs", ["language_id"], name: "index_conjugated_verbs_on_language_id", using: :btree
+  add_index "inflected_words", ["language_id"], name: "index_inflected_words_on_language_id", using: :btree
 
-  create_table "forms", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "inflected_words_groupings", force: :cascade do |t|
+    t.integer  "inflected_words_group_id"
+    t.integer  "inflected_word_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
+
+  add_index "inflected_words_groupings", ["inflected_word_id"], name: "index_inflected_words_groupings_on_inflected_word_id", using: :btree
+  add_index "inflected_words_groupings", ["inflected_words_group_id"], name: "index_inflected_words_groupings_on_inflected_words_group_id", using: :btree
+
+  create_table "inflected_words_groups", force: :cascade do |t|
+    t.integer  "word_family_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "inflected_words_groups", ["word_family_id"], name: "index_inflected_words_groups_on_word_family_id", using: :btree
 
   create_table "languages", force: :cascade do |t|
-    t.string   "name"
-    t.string   "abbreviation"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.string   "language_name"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
-  create_table "people", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "word_classes", force: :cascade do |t|
+    t.string   "word_class_name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
-  create_table "verbal_aspects", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "word_families", force: :cascade do |t|
+    t.integer  "word_class_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
-  create_table "verbs", force: :cascade do |t|
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.integer  "verbal_aspect_id"
+  add_index "word_families", ["word_class_id"], name: "index_word_families_on_word_class_id", using: :btree
+
+  create_table "word_grammemes", force: :cascade do |t|
+    t.integer  "grammeme_id"
+    t.integer  "inflected_word_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
-  add_index "verbs", ["verbal_aspect_id"], name: "index_verbs_on_verbal_aspect_id", using: :btree
+  add_index "word_grammemes", ["grammeme_id"], name: "index_word_grammemes_on_grammeme_id", using: :btree
+  add_index "word_grammemes", ["inflected_word_id"], name: "index_word_grammemes_on_inflected_word_id", using: :btree
 
-  add_foreign_key "conjugated_verb_pairings", "conjugated_verb_pairs"
-  add_foreign_key "conjugated_verb_pairings", "conjugated_verbs"
-  add_foreign_key "conjugated_verb_pairs", "verbs"
-  add_foreign_key "conjugated_verbs", "languages"
-  add_foreign_key "verbs", "verbal_aspects"
+  add_foreign_key "grammemes", "grammatical_categories"
+  add_foreign_key "inflected_words", "languages"
+  add_foreign_key "inflected_words_groupings", "inflected_words"
+  add_foreign_key "inflected_words_groupings", "inflected_words_groups"
+  add_foreign_key "inflected_words_groups", "word_families"
+  add_foreign_key "word_families", "word_classes"
+  add_foreign_key "word_grammemes", "grammemes"
+  add_foreign_key "word_grammemes", "inflected_words"
 end

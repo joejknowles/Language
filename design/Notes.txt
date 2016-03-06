@@ -1,3 +1,10 @@
+Status: failing to load page after wanted validation fails because failed record is incomplete
+  next step: create test for 0 validations,
+    create safeguards for missing content when page loads
+
+TO DO: rename columns to remove duplication of table name
+
+
 When the verbs page is visited
 I want to display verb tables
 So I can see the full vocabulary

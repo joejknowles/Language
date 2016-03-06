@@ -1,111 +1,27 @@
-
 class VerbCreator
-  def create(options)
-    initialize_variables(options)
-    create_whole_verb
-  end
-
-  private
-
-  def initialize_variables(options)
-    @conjugations = options[:conjugations]
-    @source_language = options.fetch(:source_language, 'en')
-    @target_language = options.fetch(:target_language, 'cz')
-    @verbal_aspect = options.fetch(:verbal_aspect, 'perfective')
-  end
-
-  def create_whole_verb
-    create_parent_verb
-    create_all_verb_pairs
-  end
-
-  def create_parent_verb
-    @parent_verb = Verb.create(verbal_aspect: find_verbal_aspect)
-  end
-
-  def create_all_verb_pairs
-    form_person_map.each_key do |form_name|
-      create_verb_pair(form_name)
+  def create_to_be
+    word_class = WordClass.find_by(word_class_name: 'verb')
+    @word_family = WordFamily.create(word_class: word_class)
+    english = Language.find_by(language_name: 'English')
+    czech = Language.find_by(language_name: 'Czech')
+    grammemes = Grammeme.limit(10).to_a
+    [['to be', 'být'],
+     %w(am jsem), %w(are jsi), %w(is je),
+     %w(are jsme), %w(are jste), %w(are jsou)].each do|pair|
+      grammeme = grammemes.pop
+      group = InflectedWordsGroup.create(word_family: @word_family)
+      english_word = create_inflected_word(pair[0], english)
+      english_word.grammemes << grammeme
+      czech_word = create_inflected_word(pair[1], czech)
+      czech_word.grammemes << grammeme
+      InflectedWordsGrouping.create(inflected_words_group: group,
+                                    inflected_word: english_word)
+      InflectedWordsGrouping.create(inflected_words_group: group,
+                                    inflected_word: czech_word)
     end
   end
 
-  def create_verb_pair(form_name)
-    verb_pair = ConjugatedVerbPair.create(verb: @parent_verb)
-    ConjugatedVerbPairing.create(conjugated_verb: conjugation_for_target_language(form_name), conjugated_verb_pair: verb_pair)
-    ConjugatedVerbPairing.create(conjugated_verb: conjugation_for_source_language(form_name), conjugated_verb_pair: verb_pair)
-  end
-
-  def find_verbal_aspect
-    VerbalAspect.where(name: @verbal_aspect).first
-  end
-
-  def conjugation_for_source_language(form_name)
-    create_conjugated_verb(form_name, @source_language)
-  end
-
-  def conjugation_for_target_language(form_name)
-    create_conjugated_verb(form_name, @target_language)
-  end
-
-  def create_conjugated_verb(form_name, language)
-    ConjugatedVerb.create(form_person_map[form_name].merge(
-                            language: language_record(language),
-                            conjugation: get_conjugation(language, form_name)))
-  end
-
-  def language_record(language)
-    Language.where(abbreviation: language).first
-  end
-
-  def create_conjugated_pair(form_name)
-    [
-      conjugation_for_source_language(form_name),
-      conjugation_for_target_language(form_name)
-    ]
-  end
-
-  def get_conjugation(language, form_name)
-    @conjugations[language.to_sym][form_name]
-  end
-
-  def form_person_map
-    infinitive = Form.find_by(name: 'infinitive')
-    50.times do
-      puts infinitive.name
-    end
-    present = Form.find_by(name: 'present')
-    50.times do
-      puts present.id
-    end
-
-    {
-      infinitive: {
-        form: infinitive
-      },
-      first_s: {
-        form: present,
-        person: Person.where(name: 'first singular').first
-      },
-      second_s: {
-        form: present,
-        person: Person.where(name: 'second singular').first
-      },
-      third_s: {
-        form: present,
-        person: Person.where(name: 'third singular').first
-      },
-      first_p: {
-        form: present,
-        person: Person.where(name: 'first plural').first
-      },
-      second_p: {
-        form: present,
-        person: Person.where(name: 'second plural').first
-      },
-      third_p: {
-        form: present,
-        person: Person.where(name: 'third plural').first
-      }
-    }
+  def create_inflected_word word, language
+    InflectedWord.create(word: word, language: language)
   end
 end

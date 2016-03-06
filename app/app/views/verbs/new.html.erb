@@ -1,0 +1,32 @@
+<table>
+  <%= form_for @verb, url: verbs_path, method: :post do |verb_family_form| %>
+    <tr>
+      <% verb_family_form.object.inflected_words_groups.first.inflected_words.each do |verb| %>
+          <td></td><td><%= verb.language.language_name %></td>
+      <% end %>
+    </tr>
+    <%= verb_family_form.fields_for :inflected_words_groups do |inflected_words_group_form| %>
+      <tr>
+        <%= inflected_words_group_form.fields_for :inflected_words do |inflected_word_form| %>
+          <td>
+            <% grammeme_name = inflected_word_form.object.grammemes.first.grammeme_name %>
+            <% language = inflected_word_form.object.language.language_name %>
+            <label for="<%= grammeme_name %>"><%= grammeme_name.capitalize %></label>
+          </td>
+          <td class="<%= language %>">
+            <%= inflected_word_form.text_field :word %>
+            <%= inflected_word_form.fields_for :word_grammemes do |w_g_form| %>
+              <%= w_g_form.hidden_field :grammeme_id %>
+            <% end %>
+            <%= inflected_word_form.hidden_field :language_id %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    <tr>
+      <td>
+        <%= verb_family_form.submit "submit verb"%>
+      </td>
+    </tr>
+  <% end %>
+</table>

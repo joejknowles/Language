@@ -3,11 +3,11 @@
 <% else %>
   <% @verbs.each do |verb| %>
     <table>
-      <% verb.conjugated_verb_pairs.each do |pair| %>
+      <% verb.inflected_words_groups.each do |pair| %>
         <tr>
-          <% pair.conjugated_verbs.reverse.each do |conjugated_verb| %>
+          <% pair.inflected_words.each do |conjugated_verb| %>
             <td>
-              <%= conjugated_verb.conjugation %>
+              <%= conjugated_verb.word %>
             </td>
           <% end %>
         </tr>
@@ -15,4 +15,4 @@
     </table>
   <% end %>
 <% end %>
-<a href='#'>Add a verb</a>
+<a href='verbs/new'>Add a verb</a>

@@ -1,0 +1,3 @@
+class WordFamiliesController < ApplicationController
+
+end
