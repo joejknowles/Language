@@ -21,9 +21,10 @@ class VerbsController < ApplicationController
 
   def create
     p word_family_params
-    @verb = WordFamily.new(word_family_params)
-    # VerbsHelper.new_word(word_family_params)
-    if @verb.save
+    # @verb = WordFamily.new(word_family_params)
+    @verb = VerbsHelper.new_word(word_family_params)
+    p @verb
+    if @verb.is_a?(WordFamily) && @verb.save!
       redirect_to '/verbs'
     else
       flash[:notice] = @verb.errors.full_messages
@@ -32,21 +33,15 @@ class VerbsController < ApplicationController
   end
 
   def word_family_params
-    p Language.all
-    p Grammeme.all
-    p params
     params.require(:word_family).permit(
       inflected_words_groups_attributes:
-        [inflected_words_attributes:
-          [:word, :language_id, word_grammemes_attributes:
-            [:grammeme_id]]])
-  end
-
-  def language
-    params.require(:word_family).permit(
-      inflected_words_groups_attributes:
-      [inflected_words_attributes:
-        [:word, grammemes_attributes:
-          [:id], languages_attributes: [:id]]])
+        [
+          inflected_words_attributes:
+          [
+            :word, :language_id,
+            word_grammemes_attributes:
+              [:grammeme_id]
+          ]
+        ])
   end
 end
