@@ -9,11 +9,13 @@
       <tr>
         <%= inflected_words_group_form.fields_for :inflected_words do |inflected_word_form| %>
           <td>
-            <% grammeme_name = inflected_word_form.object.grammemes.first.grammeme_name %>
-            <% language = inflected_word_form.object.language.language_name %>
+            <% grammeme = inflected_word_form.object.grammemes.first %>
+            <% grammeme_name = grammeme ? grammeme.grammeme_name : 'NONE' %>
+            <% language = inflected_word_form.object.language %>
+            <% language_name = language ? language.language_name : 'NONE'%>
             <label for="<%= grammeme_name %>"><%= grammeme_name.capitalize %></label>
           </td>
-          <td class="<%= language %>">
+          <td class="<%= language_name %>">
             <%= inflected_word_form.text_field :word %>
             <%= inflected_word_form.fields_for :word_grammemes do |w_g_form| %>
               <%= w_g_form.hidden_field :grammeme_id %>

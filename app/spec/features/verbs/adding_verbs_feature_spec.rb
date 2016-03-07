@@ -19,6 +19,27 @@ feature 'creating verbs, ' do
     scenario 'should accept correctly filled form' do
       all('.English input').first.set 'to have'
       fill_in 'word_family_inflected_words_groups_attributes_0_inflected_words_attributes_0_word', with: 'to have'
+      fill_in 'word_family_inflected_words_groups_attributes_0_inflected_words_attributes_1_word', with: 'to have'
+
+      fill_in 'word_family_inflected_words_groups_attributes_1_inflected_words_attributes_0_word', with: 'to have'
+      fill_in 'word_family_inflected_words_groups_attributes_1_inflected_words_attributes_1_word', with: 'to have'
+
+      fill_in 'word_family_inflected_words_groups_attributes_2_inflected_words_attributes_0_word', with: 'to have'
+      fill_in 'word_family_inflected_words_groups_attributes_2_inflected_words_attributes_1_word', with: 'to have'
+
+      fill_in 'word_family_inflected_words_groups_attributes_3_inflected_words_attributes_0_word', with: 'to have'
+      fill_in 'word_family_inflected_words_groups_attributes_3_inflected_words_attributes_1_word', with: 'to have'
+
+      fill_in 'word_family_inflected_words_groups_attributes_4_inflected_words_attributes_0_word', with: 'to have'
+      fill_in 'word_family_inflected_words_groups_attributes_4_inflected_words_attributes_1_word', with: 'to have'
+
+      fill_in 'word_family_inflected_words_groups_attributes_5_inflected_words_attributes_0_word', with: 'to have'
+      fill_in 'word_family_inflected_words_groups_attributes_5_inflected_words_attributes_1_word', with: 'to have'
+
+      fill_in 'word_family_inflected_words_groups_attributes_6_inflected_words_attributes_0_word', with: 'to have'
+      fill_in 'word_family_inflected_words_groups_attributes_6_inflected_words_attributes_1_word', with: 'to have'
+      click_button 'submit verb'
+      expect(page).to have_content("word successfully added")
     end
   end
 end

@@ -3,7 +3,7 @@ module VerbBuilder
     20.times { p 'here' }
     p params
     20.times { p 'here' }
-    family = WordFamily.new
+    @family = WordFamily.new
     params[:inflected_words_groups_attributes].each do |group_params|
       group = InflectedWordsGroup.new
       group_params
