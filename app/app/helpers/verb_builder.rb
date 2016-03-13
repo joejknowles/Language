@@ -1,5 +1,6 @@
 module VerbBuilder
-  def self.new_word(params)
+  def self.new_word(params, flash)
+    flash = flash
     @family = WordFamily.new
     @family.word_class = WordClass.find_by(word_class_name: 'verb')
     groups_attributes = params[:inflected_words_groups_attributes]
@@ -24,28 +25,16 @@ module VerbBuilder
         grammeme = Grammeme.find(grammeme_id)
         word = InflectedWord.new(word: word_n, language_id: language_id)
         word.grammemes << grammeme
-        return false unless word.save
+        unless word.save
+          flash[:notices] = word.errors.full_messages
+          return false
+        end
         group.inflected_words << word
       end
       return false unless group.save
       @family.inflected_words_groups << group
     end
 
-    @family
-  end
-
-  def self.new_new_word(params)
-    @family = WordFamily.new
-    params[:inflected_words_groups_attributes].each do |group_params|
-      group = InflectedWordsGroup.new
-      group_params[1][:inflected_words_attributes].each do |word_params|
-        word_grammeme = WordGrammeme.new(word_params[1][:word_grammeme_attributes])
-        word = group.inflected_words.create(word_params[1])
-
-        word.grammemes.each { |x| p x}
-      end
-      @family.inflected_words_groups << group
-    end
     @family
   end
 end

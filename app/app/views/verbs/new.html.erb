@@ -16,7 +16,7 @@
             <label for="<%= grammeme_name %>"><%= grammeme_name.capitalize %></label>
           </td>
           <td class="<%= language_name %>">
-            <%= inflected_word_form.text_field :word %>
+            <%= inflected_word_form.text_field :word, class: language_name + ' ' + grammeme_name.split(' ').join('') %>
             <%= inflected_word_form.fields_for :word_grammemes do |w_g_form| %>
               <%= w_g_form.hidden_field :grammeme_id %>
             <% end %>
@@ -32,3 +32,6 @@
     </tr>
   <% end %>
 </table>
+
+
+<%= javascript_include_tag 'verbs/new_verb.js' %>

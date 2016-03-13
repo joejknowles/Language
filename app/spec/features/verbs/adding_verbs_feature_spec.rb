@@ -39,6 +39,7 @@ feature 'creating verbs, ' do
       fill_in 'word_family_inflected_words_groups_attributes_6_inflected_words_attributes_0_word', with: 'have'
       fill_in 'word_family_inflected_words_groups_attributes_6_inflected_words_attributes_1_word', with: 'mají'
       click_button 'submit verb'
+      expect(page).to have_content("to have")
       expect(page).to have_content("word successfully added")
     end
   end

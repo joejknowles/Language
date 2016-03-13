@@ -4,13 +4,14 @@ module VerbsHelper
   def self.all_verbs
     WordFamily.all_verbs
   end
+
   def self.create_to_be
     verb_creator = VerbCreator.new
     verb_creator.create_to_be
   end
 
-  def self.new_word(params)
-    VerbBuilder.new_word(params)
+  def self.new_word(params, flash)
+    VerbBuilder.new_word(params, flash)
   end
 
   def self.add_verb_database_dependencies

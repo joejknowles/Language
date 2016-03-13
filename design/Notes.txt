@@ -20,4 +20,8 @@ So it can be disambiguated
 - Input words on website with javascript autofill. both English and
   - Ajax validation for preexisting words
 
-- Abstract factories for checking equality
+- Abstract factories for checking equality - what?
+
+- modify delete words
+
+- check refresh problem for new words

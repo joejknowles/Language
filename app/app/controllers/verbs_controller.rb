@@ -20,7 +20,7 @@ class VerbsController < ApplicationController
   end
 
   def create
-    @verb = VerbsHelper.new_word(word_family_params)
+    @verb = VerbsHelper.new_word(word_family_params, flash)
 
     if @verb.is_a?(WordFamily) && @verb.save!
       flash[:notice] = ['word successfully added']
